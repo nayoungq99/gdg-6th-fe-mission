@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 
 function App() {
   return(
-    <div style={styles.app}>
+    <div>
       <Navbar />
       <Content />
       <Footer />
@@ -14,9 +14,3 @@ function App() {
 }
 
 export default App;
-
-const styles = {
-  app: {
-    fontFamily: "sans-serif",
-  },
-};

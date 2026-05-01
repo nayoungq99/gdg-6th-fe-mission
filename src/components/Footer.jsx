@@ -10,7 +10,6 @@ function Footer(){
 
 const styles ={
     footer:{
-        display:"flex",
         justifyContent:"center",
     },
     button:{

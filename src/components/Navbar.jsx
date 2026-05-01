@@ -17,17 +17,16 @@ function Navbar(){
 
 export default Navbar;
 const styles ={
-    container: {
-    textAlign: "center",
-    marginTop: "30px",
-  },
-  logo: {
-    width: "70px",
-    marginBottom: "10px",
-  },
-  buttonGroup: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "5px",
-  },
+    navbar: {
+        textAlign: "center",
+        marginTop: "30px",
+    },
+    logo: {
+        width: "70px",
+        marginBottom: "10px",
+    },
+    buttonGroup: {
+        justifyContent: "center",
+        marginBottom: "5px",
+    },
 };

@@ -6,8 +6,8 @@ function Content() {
                 <button>검색</button>
             </div>
 
-            <div style={styles.result}>
-                <img src="/gdg-logo.svg" alt="logo" style={styles.logoSmall} />
+            <div>
+                <img src="/gdg-logo.svg" alt="logo" style={styles.logo} />
                 <p>검색 결과가 없습니다.</p>
             </div>
         </div>
@@ -17,6 +17,10 @@ function Content() {
 const styles = {
   container: {
     textAlign: "center",
+  },
+  logo: {
+    width: "70px",
+    marginBottom: "5px",
   },
 };
 
