@@ -13,7 +13,7 @@ const styles ={
         justifyContent:"center",
     },
     button:{
-        width:"90%",
+        width:"100%",
     },
 }
 
