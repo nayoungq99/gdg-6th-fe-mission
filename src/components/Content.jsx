@@ -7,7 +7,7 @@ function Content() {
             </div>
 
             <div>
-                <img src="/gdg-logo.svg" alt="logo" style={styles.logo} />
+                <img src="/gdg-logo.svg" style={styles.logo} />
                 <p>검색 결과가 없습니다.</p>
             </div>
         </div>
