@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Item from '../components/Item';
-import { categoryData } from '../data/mockData';
+import { fetchCategoryData } from '../apis/categoryApi';
 
 function CategoryPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("카테고리 선택");
 
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const categories = ["의류", "전자기기", "화장품", "식품"];
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchCategoryData();
+        setProducts(data);
+      } catch (error) {
+        console.error("데이터를 불러오는데 실패했습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProducts();
+  }, []);
+
   const handleCategoryClick = (categoryName) => {
     console.log(`${categoryName} 카테고리 클릭`);
     setSelected(categoryName);
@@ -52,9 +72,14 @@ function CategoryPage() {
 
       {/* 상품 리스트 */}
       <div style={itemListStyle}>
-        {categoryData.map((product) => (
-          <Item key={product.id} item={product} />
-        ))}
+        {isLoading ? (
+          <div>로딩 중...</div>
+        ) : (
+          // 4. 기존 categoryData 대신 API로 받아온 products를 렌더링합니다.
+          products.map((product) => (
+            <Item key={product.id} item={product} />
+          ))
+        )}
       </div>
 
     </div>

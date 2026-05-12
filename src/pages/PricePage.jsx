@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Item from '../components/Item';
-import { priceSelectedData } from '../data/mockData';
+import { fetchPriceListData } from '../apis/priceApi';
 
 function PricePage() {
-  const productList = priceSelectedData?.items || [];
+  const [productList, setProductList] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
 
   const [minInput, setMinInput] = useState('0');
   const [maxInput, setMaxInput] = useState('0');
   
-  const [displayData, setDisplayData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setDisplayData([...productList]);
+    const getInitialData = async () => {
+      try {
+        setIsLoading(true);
+        const items = await fetchPriceListData();
+        setProductList(items);      // 원본 데이터 저장
+        setDisplayData(items);    // 처음엔 전체 리스트 표시
+      } catch (error) {
+        console.error("데이터 초기화 실패:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getInitialData();
   }, []);
 
   const handleSearch = () => {
@@ -59,9 +73,17 @@ function PricePage() {
 
       {/* 상품 리스트 */}
       <div style={itemListStyle}>
-          {displayData.map((product) => (
-            <Item key={product.id} item={product} />
-          ))}
+        {isLoading ? (
+          <div>상품을 불러오는 중...</div>
+        ) : (
+          displayData.length > 0 ? (
+            displayData.map((product) => (
+              <Item key={product.id} item={product} />
+            ))
+          ) : (
+            <div>설정한 가격 범위에 맞는 상품이 없습니다.</div>
+          )
+        )}
       </div>
 
     </div>

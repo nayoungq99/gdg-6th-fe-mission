@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import CategoryPage from './pages/CategoryPage';
 import PricePage from './pages/PricePage';
 import SortPage from './pages/SortPage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return(
@@ -15,6 +16,7 @@ function App() {
           <Route path='/category' element={<CategoryPage />} />
           <Route path='/price' element={<PricePage />} />
           <Route path='/sort' element={<SortPage />} />
+          <Route path='/admin' element={<AdminPage />} />
           
         </Routes>
         <Footer />
