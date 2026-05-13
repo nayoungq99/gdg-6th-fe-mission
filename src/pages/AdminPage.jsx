@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { registerProduct, addStock, deleteProduct } from '../apis/adminApi';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 function AdminPage() {
     const categoryOptions = ["의류", "전자기기", "화장품", "식품"];
@@ -48,15 +50,13 @@ function AdminPage() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <span className="w-16 text-sm font-medium">상품명</span>
-              <input 
-                className="flex-1 border border-gray-300 rounded-lg p-2 text-sm outline-none focus:border-blue-500" 
-                placeholder="상품명 입력..." 
+              <input className="flex-1" placeholder="상품명 입력..."
                 value={registerForm.itemName} 
                 onChange={(e) => setRegisterForm({...registerForm, itemName: e.target.value})} 
               />
               <span className="w-12 text-sm font-medium">수량</span>
               <input 
-                className="flex-1 border border-gray-300 rounded-lg p-2 text-sm outline-none focus:border-blue-500" 
+                className="flex-1" 
                 type="number" 
                 value={registerForm.quantity} 
                 onChange={(e) => setRegisterForm({...registerForm, quantity: e.target.value})} 
@@ -65,7 +65,7 @@ function AdminPage() {
             <div className="flex items-center gap-4">
               <span className="w-16 text-sm font-medium">가격</span>
               <input 
-                className="flex-1 border border-gray-300 rounded-lg p-2 text-sm outline-none focus:border-blue-500" 
+                className="flex-1" 
                 type="number" 
                 value={registerForm.price} 
                 onChange={(e) => setRegisterForm({...registerForm, price: e.target.value})} 
@@ -83,12 +83,13 @@ function AdminPage() {
             </div>
           </div>
           <p className="text-gray-400 text-xs mt-2">* 추가 기능을 카테고리로 설정한 경우에만 카테고리를 이용해주세요.</p>
-          <button 
-            className="self-end mt-2 bg-[#3b82f6] text-white px-12 py-2 rounded-lg text-sm font-bold hover:bg-blue-600 transition-colors"
-            onClick={handleRegister}
+
+          <Button varients='secondary'
+            className="self-end mt-2 px-12 py-2 text-sm"
+            onClick="{handleRegister}"
           >
             등록
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -99,25 +100,23 @@ function AdminPage() {
           <div className="flex items-center gap-4">
             <span className="w-16 text-sm font-medium">상품명</span>
             <input 
-              className="flex-1 border border-gray-300 rounded-lg p-2 text-sm outline-none focus:border-blue-500" 
+              className='flex-1'
               placeholder="상품명 입력..." 
               value={addForm.itemName} 
               onChange={(e) => setAddForm({...addForm, itemName: e.target.value})} 
             />
             <span className="w-12 text-sm font-medium">수량</span>
             <input 
-              className="flex-1 border border-gray-300 rounded-lg p-2 text-sm outline-none focus:border-blue-500" 
+              className="flex-1" 
               type="number" 
               value={addForm.quantity} 
               onChange={(e) => setAddForm({...addForm, quantity: e.target.value})} 
             />
           </div>
-          <button 
-            className="self-end mt-2 bg-[#3b82f6] text-white px-12 py-2 rounded-lg text-sm font-bold hover:bg-blue-600 transition-colors"
-            onClick={handleAddStock}
-          >
+          <Button varients='secondary' className='self-end mt-2 px-12 py-2 text-sm'
+          onClick='{handleAddStock}'>
             추가
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -128,18 +127,15 @@ function AdminPage() {
           <div className="flex items-center gap-4">
             <span className="w-16 text-sm font-medium">상품명</span>
             <input 
-              className="w-[45%] border border-gray-300 rounded-lg p-2 text-sm outline-none focus:border-red-500" 
+              className="w-[45%]" 
               placeholder="상품명 입력..." 
               value={deleteName} 
               onChange={(e) => setDeleteName(e.target.value)} 
             />
           </div>
-          <button 
-            className="self-end mt-2 bg-[#ef4444] text-white px-12 py-2 rounded-lg text-sm font-bold hover:bg-red-600 transition-colors"
-            onClick={handleDelete}
-          >
+          <Button className="self-end mt-2 bg-red-500 border-none text-white px-12 py-2 text-sm hover:bg-red-600" onClick="{handleDelete}">
             삭제
-          </button>
+          </Button>
         </div>
       </section>
 
