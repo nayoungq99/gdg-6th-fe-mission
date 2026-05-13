@@ -45,8 +45,8 @@ function AdminPage() {
       
       {/* --- 상품 등록 섹션 --- */}
       <section className="w-full max-w-2xl">
-        <h3 className="text-lg font-bold mb-4">상품 등록</h3>
-        <div className="bg-[#f9f9f9] border border-gray-200 rounded-xl p-8 flex flex-col gap-4 shadow-sm">
+        <h3 className="text-lg font-bold mb-4 text-[#000000]">상품 등록</h3>
+        <div className="bg-[#FFFFFF] border border-gray-200 rounded-xl p-8 flex flex-col gap-4 ">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <span className="w-16 text-sm font-medium">상품명</span>
@@ -86,7 +86,7 @@ function AdminPage() {
 
           <Button varients='secondary'
             className="self-end mt-2 px-12 py-2 text-sm"
-            onClick="{handleRegister}"
+            onClick={handleRegister}
           >
             등록
           </Button>
@@ -95,7 +95,7 @@ function AdminPage() {
 
       {/* --- 재고 추가 섹션 --- */}
       <section className="w-full max-w-2xl">
-        <h3 className="text-lg font-bold mb-4">재고 추가</h3>
+        <h3 className="text-lg font-bold mb-4 text-[#000000]">재고 추가</h3>
         <div className="bg-[#f9f9f9] border border-gray-200 rounded-xl p-8 flex flex-col gap-4 shadow-sm">
           <div className="flex items-center gap-4">
             <span className="w-16 text-sm font-medium">상품명</span>
@@ -114,7 +114,7 @@ function AdminPage() {
             />
           </div>
           <Button varients='secondary' className='self-end mt-2 px-12 py-2 text-sm'
-          onClick='{handleAddStock}'>
+          onClick={handleAddStock}>
             추가
           </Button>
         </div>
@@ -122,7 +122,7 @@ function AdminPage() {
 
       {/* --- 상품 삭제 섹션 --- */}
       <section className="w-full max-w-2xl">
-        <h3 className="text-lg font-bold mb-4">상품 삭제</h3>
+        <h3 className="text-lg font-bold mb-4 text-[#000000]">상품 삭제</h3>
         <div className="bg-[#f9f9f9] border border-gray-200 rounded-xl p-8 flex flex-col gap-4 shadow-sm">
           <div className="flex items-center gap-4">
             <span className="w-16 text-sm font-medium">상품명</span>
@@ -133,7 +133,9 @@ function AdminPage() {
               onChange={(e) => setDeleteName(e.target.value)} 
             />
           </div>
-          <Button className="self-end mt-2 bg-red-500 border-none text-white px-12 py-2 text-sm hover:bg-red-600" onClick="{handleDelete}">
+          <Button 
+            className="self-end mt-2 bg-red-500 border-none text-white px-12 py-2 text-sm hover:bg-red-600" 
+            onClick={handleDelete}>
             삭제
           </Button>
         </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Item from '../components/Item';
 import { fetchPriceListData } from '../apis/priceApi';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 function PricePage() {
   const [productList, setProductList] = useState([]);
@@ -48,21 +50,23 @@ function PricePage() {
       {/* 상단 검색 영역 */}
       <div style={topControlStyle}>
         <div style={inputGroupStyle}>
-          <input
+          <Input
             type="number"
             value={minInput}
             onChange={(e) => setMinInput(e.target.value)}
-            style={minpriceInputStyle}
           />
-          <input
+          <Input
             type="number"
             value={maxInput}
             onChange={(e) => setMaxInput(e.target.value)}
-            style={maxpriceInputStyle}
           />
-          <button style={searchButtonStyle} onClick={handleSearch}>
+          <Button 
+            varients='primary'
+            style={searchButtonStyle}
+            onClick={handleSearch}
+          >
             검색
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -108,7 +112,8 @@ const topControlStyle = {
     maxWidth: '800px',
     marginBottom: '60px',
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginLeft:'150px',
 };
 
 const inputGroupStyle = {
@@ -119,7 +124,7 @@ const inputGroupStyle = {
 };
 
 const minpriceInputStyle = {
-    flex:1,
+    width: '200px',
     padding: '8px 10px',
     border: '1px solid #aaaaaa',
     borderRadius: '8px',
@@ -128,7 +133,7 @@ const minpriceInputStyle = {
 };
 
 const maxpriceInputStyle = {
-    flex: 1,
+    width: '200px',
     padding: '8px 10px',
     border: '1px solid #aaaaaa',
     borderRadius: '8px',

@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from './Button';
+import Input from './Input';
 
 export default function Content() {
   return (
@@ -6,8 +8,13 @@ export default function Content() {
       <div style={centeredContainerStyle}>
         
         <div style={searchBoxGroupStyle}>
-          <input type="text" placeholder="상품 검색..." style={inputStyle} />
-          <button style={searchButtonStyle}>검색</button>
+          <Input type="text" placeholder="상품 검색..." style={inputStyle} />
+          <Button
+            varients='primary'
+            style={searchButtonStyle}
+            onClick={() => console.log("검색 실행")}>
+              검색
+          </Button>
         </div>
 
         {/* 문구 영역 */}

@@ -119,7 +119,8 @@ const countInputStyle = {
   borderRadius: '8px',
   outline: 'none',
   fontSize: '14px',
-  textAlign:'center',
+  textAlign:'left',
+  paddingLeft: '20px',
 };
 
 const cartButtonStyle = {

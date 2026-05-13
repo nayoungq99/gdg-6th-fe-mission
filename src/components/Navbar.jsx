@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; 
+import Button from './Button';
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation(); 
 
   const isAdminPage = location.pathname.includes('/admin');
-
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -45,11 +45,12 @@ export default function Navbar() {
         )}
       </div>
       
-      <button 
-        className="px-2 py-2 text-[#0085FF] border border-[#0085FF] rounded-lg text-sm hover:bg-blue-50 transition-colors"
+      <Button 
+        varients='primary'
+        className="px-2 py-2 text-sm transition-colors"
         onClick={() => navigate(isAdminPage ? '/' : '/admin')}>
         {isAdminPage ? '소비자' : '관리자'}
-      </button>
+      </Button>
     </nav>
   );
 }

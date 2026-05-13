@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Item from '../components/Item';
 import { sortedData } from '../data/mockData';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 function SortPage() {
   const productList = sortedData || [];
@@ -155,15 +157,15 @@ const itemListStyle = {
     maxWidth: '800px', 
     gap: '10px' };
 
-const bottomPurchaseButtonStyle = { 
-    width: '100%', 
-    maxWidth: '800px', 
-    marginTop: '50px',
-    padding: '15px 0', 
-    backgroundColor: '#fff', 
-    color: '#0085FF', 
-    border: '2px solid #0085FF', 
-    borderRadius: '8px', 
-    fontSize: '18px', 
-    fontWeight: 'bold', 
-    cursor: 'pointer' };
+// const bottomPurchaseButtonStyle = { 
+//     width: '100%', 
+//     maxWidth: '800px', 
+//     marginTop: '50px',
+//     padding: '15px 0', 
+//     backgroundColor: '#fff', 
+//     color: '#0085FF', 
+//     border: '2px solid #0085FF', 
+//     borderRadius: '8px', 
+//     fontSize: '18px', 
+//     fontWeight: 'bold', 
+//     cursor: 'pointer' };

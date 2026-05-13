@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Item from '../components/Item';
 import { fetchCategoryData } from '../apis/categoryApi';
+import Button from '../components/Button';
+import Input from '../components/Input';
 
 function CategoryPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("카테고리 선택");
-
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -14,13 +15,13 @@ function CategoryPage() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const data = await fetchCategoryData();
         setProducts(data);
       } catch (error) {
         console.error("데이터를 불러오는데 실패했습니다.");
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 
@@ -39,13 +40,14 @@ function CategoryPage() {
       {/* 카테고리 선택 */}
       <div style={topControlStyle}>
         <div style={dropdownContainerStyle}>
-          <div 
-            style={{...selectStyle, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} 
+          <Button 
+            varients='primary'
+            className='w-full flex justify-between items-center text-gray-500 border-gray-400'
             onClick={() => setIsOpen(!isOpen)}
-          >
-            {selected}
-            <span style={{ fontSize: '12px', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: '0.2s' }}>▼</span>
-          </div>
+            >
+              {selected}
+              <span style={{ fontSize: '12px', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: '0.2s' }}>▼</span>
+            </Button>
 
           {isOpen && (
             <ul style={dropdownListStyle}>
@@ -54,8 +56,8 @@ function CategoryPage() {
                   key={cat} 
                   style={dropdownItemStyle}
                   onClick={() => handleCategoryClick(cat)}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#d1d1d1'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#e1e1e1'}
+                  // onMouseEnter={(e) => e.target.style.backgroundColor = '#d1d1d1'}
+                  // onMouseLeave={(e) => e.target.style.backgroundColor = '#e1e1e1'}
                 >
                   {cat}
                 </li>
@@ -67,7 +69,9 @@ function CategoryPage() {
 
       {/* 내 구매 내역 */}
       <div style={historyLinkWrapperStyle}>
-        <span style={historyLinkStyle}>내 구매 내역</span>
+        <Button varients='primary' className='border-none p-0 text-black border-b-2 border-black rounded-none hover:bg-transparent'>
+          내 구매 내역
+        </Button>
       </div>
 
       {/* 상품 리스트 */}
@@ -75,7 +79,7 @@ function CategoryPage() {
         {isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          // 4. 기존 categoryData 대신 API로 받아온 products를 렌더링합니다.
+          // 4. 기존 categoryData 대신 API로 받아온 products를 렌더링
           products.map((product) => (
             <Item key={product.id} item={product} />
           ))
@@ -99,23 +103,11 @@ const pageWrapperStyle = {
 const topControlStyle = {
   width: '100%',
   maxWidth: '800px', // 전체적인 가로폭 제한
-  marginBottom: '70px',
+  marginBottom: '60px',
   display: "flex",
   justifyContent: "flex-start"
 };
 
-const selectStyle = {
-  fontSize: '16px',
-  padding: '10px 15px',
-  border: '1px solid #aaaaaa',
-  borderRadius: '8px',
-  width: '200px',
-  color: '#8b8a8a',
-  outline: 'none',
-  appearance: 'none',
-  WebkitAppearance: 'none', 
-  MozAppearance: 'none',
-};
 
 const historyLinkWrapperStyle = {
   width: '100%',
