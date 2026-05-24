@@ -53,13 +53,13 @@ function PricePage() {
             type="number"
             value={minInput}
             onChange={(e) => setMinInput(e.target.value)}
-            style={minpriceInputStyle}
+            style={priceInputStyle}
           />
           <Input
             type="number"
             value={maxInput}
             onChange={(e) => setMaxInput(e.target.value)}
-            style={maxpriceInputStyle}
+            style={priceInputStyle}
           />
           <Button
             varients="primary"
@@ -116,16 +116,7 @@ const inputGroupStyle = {
   gap: "20px",
 };
 
-const minpriceInputStyle = {
-  width: "200px",
-  padding: "8px 10px",
-  border: "1px solid #aaaaaa",
-  borderRadius: "8px",
-  outline: "none",
-  fontSize: "16px",
-};
-
-const maxpriceInputStyle = {
+const priceInputStyle = {
   width: "200px",
   padding: "8px 10px",
   border: "1px solid #aaaaaa",

@@ -1,5 +1,6 @@
 import useCartStore from "../store/useCartStore";
 import Button from "./Button";
+import { formatPrice } from "../utils/formatter";
 
 export default function Item({ item }) {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -7,11 +8,12 @@ export default function Item({ item }) {
   return (
     <div style={itemCardStyle}>
       <div style={itemInfoStyle}>
+        {/* 상품명 유연하게 처리 */}
         <span style={itemNameStyle}>{item.name || item.itemName}</span>
-        <span style={itemPriceStyle}>
-          {Number(item.price).toLocaleString()}원
-        </span>
+        {/* 👈 중복되던 toLocaleString() 코드를 공통 함수로 깔끔하게 대체 */}
+        <span style={itemPriceStyle}>{formatPrice(item.price)}</span>
       </div>
+
       <Button
         varients="primary"
         style={addToCartButtonStyle}
@@ -22,6 +24,7 @@ export default function Item({ item }) {
     </div>
   );
 }
+
 const itemCardStyle = {
   display: "flex",
   justifyContent: "space-between",
@@ -31,6 +34,7 @@ const itemCardStyle = {
   border: "1px solid #e1e1e1",
   borderRadius: "8px",
   backgroundColor: "#fff",
+  boxSizing: "border-box",
 };
 
 const itemInfoStyle = {
