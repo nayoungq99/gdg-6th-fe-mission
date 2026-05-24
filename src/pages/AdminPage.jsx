@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   registerProduct,
   addStock,
@@ -11,7 +11,6 @@ import Input from "../components/Input";
 function AdminPage() {
   const categoryOptions = ["의류", "전자기기", "화장품", "식품"];
 
-  // 1. 상품 등록 상태 (요청하신 대로 name, price, stock 규격을 맞췄습니다)
   const [registerForm, setRegisterForm] = useState({
     name: "",
     price: "0",
@@ -19,70 +18,99 @@ function AdminPage() {
     category: "",
   });
 
-  // 2. 재고 추가 상태 (API 이름 규격 통일)
   const [addForm, setAddForm] = useState({ name: "", quantity: "0" });
-
-  // 3. 상품 삭제 상태
   const [deleteName, setDeleteName] = useState("");
 
-  /* eslint-disable-next-line no-unused-vars */
-  const [products, setProducts] = useState([]);
+  const [setProducts] = useState([]);
+  const [isFetchLoading, setIsFetchLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const result = await getProductList();
-        if (result.success) {
+  // 1. useCallback으로 함수 참조 고정 (린트 경고 해결)
+  const fetchProducts = useCallback(async () => {
+    try {
+      setIsFetchLoading(true);
+      setFetchError(null);
+      const result = await getProductList();
+
+      if (result && typeof result === "object" && "success" in result) {
+        if (result.success && Array.isArray(result.data)) {
           setProducts(result.data);
+        } else {
+          throw new Error(result.message || "데이터를 불러올 수 없습니다.");
         }
-      } catch (error) {
-        console.error("화면 로드 중 상품 목록 호출 실패:", error);
+      } else if (Array.isArray(result)) {
+        setProducts(result);
+      } else {
+        throw new Error("데이터 형식이 올바르지 않습니다.");
       }
-    };
-
-    fetchProducts();
+    } catch (error) {
+      setFetchError(error.message || "목록 호출 실패");
+    } finally {
+      setIsFetchLoading(false);
+    }
   }, []);
+
+  // 2. 이제 경고 없이 안전하게 호출
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchProducts();
+  }, [fetchProducts]);
 
   // --- 핸들러 함수들 ---
   const handleRegister = async () => {
     const { name, price, stock, category } = registerForm;
     if (!name || !price || !stock || !category) {
-      return alert("모든 정보를 입력해주세요.");
+      return window.alert("모든 정보를 입력해주세요.");
     }
-    // adminApi.js로 보낼 데이터 포맷팅
-    const productData = {
-      itemName: name,
-      price: price,
-      quantity: stock,
-      category: category,
-    };
-
-    await registerProduct(productData);
-    setRegisterForm({
-      name: "",
-      price: "0",
-      stock: "0",
-      category: "",
-    });
+    try {
+      await registerProduct({
+        itemName: name,
+        price,
+        quantity: stock,
+        category,
+      });
+      window.alert("등록 완료!");
+      setRegisterForm({ name: "", price: "0", stock: "0", category: "" });
+      await fetchProducts();
+    } catch {
+      window.alert("등록 실패");
+    }
   };
 
   const handleAddStock = async () => {
     if (!addForm.name || !addForm.quantity) {
-      return alert("상품명과 수량을 입력해주세요.");
+      return window.alert("상품명과 수량을 입력해주세요.");
     }
-    await addStock(addForm.name, addForm.quantity);
-    setAddForm({ name: "", quantity: "0" });
+    try {
+      await addStock(addForm.name, addForm.quantity);
+      window.alert("재고 추가 완료!");
+      setAddForm({ name: "", quantity: "0" });
+      await fetchProducts();
+    } catch {
+      window.alert("재고 추가 실패");
+    }
   };
 
   const handleDelete = async () => {
-    if (!deleteName) return alert("삭제할 상품명을 입력해주세요.");
-    await deleteProduct(deleteName);
-    setDeleteName("");
+    if (!deleteName) return window.alert("삭제할 상품명을 입력해주세요.");
+    try {
+      await deleteProduct(deleteName);
+      window.alert("삭제 완료!");
+      setDeleteName("");
+      await fetchProducts();
+    } catch {
+      window.alert("삭제 실패");
+    }
   };
 
   return (
     <div style={adminWrapperStyle}>
-      {/* --- 상품 등록 섹션 --- */}
+      {fetchError && (
+        <div style={errorBannerStyle}>
+          🚨 {fetchError} <button onClick={fetchProducts}>재시도</button>
+        </div>
+      )}
+
       <section style={sectionContainerStyle}>
         <h3 style={sectionTitleStyle}>상품 등록</h3>
         <div style={adminCardStyle}>
@@ -110,7 +138,6 @@ function AdminPage() {
               />
             </div>
           </div>
-
           <div style={rowStyle}>
             <div style={fieldStyle}>
               <span style={labelStyle}>가격</span>
@@ -143,22 +170,17 @@ function AdminPage() {
               </select>
             </div>
           </div>
-
-          <p style={helperTextStyle}>
-            * 추가 기능을 카테고리로 설정한 경우에만 카테고리를 이용해주세요.
-          </p>
-
           <Button
             varients="primary"
             style={adminButtonStyle}
             onClick={handleRegister}
+            disabled={isFetchLoading}
           >
             등록
           </Button>
         </div>
       </section>
 
-      {/* --- 재고 추가 섹션 --- */}
       <section style={sectionContainerStyle}>
         <h3 style={sectionTitleStyle}>재고 추가</h3>
         <div style={adminCardStyle}>
@@ -190,17 +212,17 @@ function AdminPage() {
             varients="primary"
             style={adminButtonStyle}
             onClick={handleAddStock}
+            disabled={isFetchLoading}
           >
             추가
           </Button>
         </div>
       </section>
 
-      {/* --- 상품 삭제 섹션 --- */}
       <section style={sectionContainerStyle}>
         <h3 style={sectionTitleStyle}>상품 삭제</h3>
         <div style={adminCardStyle}>
-          <div style={{ ...rowStyle, width: "50%" }}>
+          <div style={deleteRowStyle}>
             <div style={fieldStyle}>
               <span style={labelStyle}>상품명</span>
               <Input
@@ -211,7 +233,11 @@ function AdminPage() {
               />
             </div>
           </div>
-          <Button style={deleteButtonStyle} onClick={handleDelete}>
+          <Button
+            style={deleteButtonStyle}
+            onClick={handleDelete}
+            disabled={isFetchLoading}
+          >
             삭제
           </Button>
         </div>
@@ -231,102 +257,64 @@ const adminWrapperStyle = {
   backgroundColor: "#fff",
   minHeight: "100vh",
 };
-
-const sectionContainerStyle = {
+const errorBannerStyle = {
   width: "100%",
   maxWidth: "750px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
+  padding: "15px",
+  backgroundColor: "#FFEBEB",
+  border: "1px solid #FFC1C1",
+  borderRadius: "8px",
+  color: "#D8000C",
+  marginBottom: "20px",
 };
-
+const sectionContainerStyle = { width: "100%", maxWidth: "750px" };
 const sectionTitleStyle = {
   fontSize: "20px",
   fontWeight: "bold",
-  color: "#000",
   marginBottom: "20px",
-  textAlign: "left",
 };
 
 const adminCardStyle = {
   width: "100%",
-  maxWidth: "800px",
   backgroundColor: "#fff",
   border: "1px solid #E0E0E0",
   borderRadius: "12px",
-  padding: "30px 40px",
+  padding: "30px",
   display: "flex",
   flexDirection: "column",
-  gap: "24px",
-  boxSizing: "border-box",
+  gap: "20px",
 };
-
-const rowStyle = {
-  display: "flex",
-  gap: "30px",
-  width: "100%",
-  justifyContent: "space-between",
-};
-
+const rowStyle = { display: "flex", gap: "20px" };
+const deleteRowStyle = { display: "flex", width: "50%" };
 const fieldStyle = {
   flex: 1,
   display: "flex",
   alignItems: "center",
-  gap: "15px",
+  gap: "10px",
 };
-
-const labelStyle = {
-  fontWeight: "bold",
-  fontSize: "15px",
-  color: "#333",
-  minWidth: "50px",
-};
-
+const labelStyle = { fontWeight: "bold", minWidth: "60px" };
 const inputInCardStyle = {
   flex: 1,
-  height: "42px",
-  border: "1px solid #8c8a8a",
+  height: "40px",
+  padding: "0 10px",
+  border: "1px solid #ccc",
   borderRadius: "8px",
-  padding: "0 12px",
-  fontSize: "15px",
-  outline: "none",
-  boxSizing: "border-box",
 };
-
 const selectStyle = {
   flex: 1,
-  height: "42px",
-  border: "1px solid #8c8a8a",
-  borderRadius: "8px",
+  height: "40px",
   padding: "0 10px",
-  backgroundColor: "white",
-  fontSize: "14px",
-  color: "#b9b7b7",
-  outline: "none",
-  cursor: "pointer",
+  border: "1px solid #ccc",
+  borderRadius: "8px",
 };
-
-const helperTextStyle = {
-  fontSize: "13px",
-  color: "#B0B0B0",
-  marginTop: "-5px",
-  textAlign: "left",
-};
-
 const adminButtonStyle = {
   alignSelf: "flex-end",
-  width: "160px",
+  width: "120px",
   height: "40px",
-  fontSize: "15px",
-  fontWeight: "bold",
   backgroundColor: "#0085FF",
   color: "#fff",
   border: "none",
   borderRadius: "8px",
   cursor: "pointer",
 };
-
-const deleteButtonStyle = {
-  ...adminButtonStyle,
-  backgroundColor: "#FF0000",
-};
+const deleteButtonStyle = { ...adminButtonStyle, backgroundColor: "#FF0000" };
