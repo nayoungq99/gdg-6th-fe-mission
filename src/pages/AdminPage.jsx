@@ -24,8 +24,6 @@ function AdminPage() {
   const [setProducts] = useState([]);
   const [isFetchLoading, setIsFetchLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
-
-  // 1. useCallback으로 함수 참조 고정 (린트 경고 해결)
   const fetchProducts = useCallback(async () => {
     try {
       setIsFetchLoading(true);
@@ -48,15 +46,13 @@ function AdminPage() {
     } finally {
       setIsFetchLoading(false);
     }
-  }, []);
+  }, [setProducts]);
 
-  // 2. 이제 경고 없이 안전하게 호출
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProducts();
   }, [fetchProducts]);
 
-  // --- 핸들러 함수들 ---
   const handleRegister = async () => {
     const { name, price, stock, category } = registerForm;
     if (!name || !price || !stock || !category) {
