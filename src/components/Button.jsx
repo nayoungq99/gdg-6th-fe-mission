@@ -8,7 +8,11 @@ const varientType = {
 const Button = ({ children, varients = "primary", className, ...props }) => {
   return (
     <button
-      className={twMerge("p-2 rounded-lg cursor-pointer font-bold", varientType[varients], className)}
+      className={twMerge(
+        "p-2 rounded-lg cursor-pointer font-bold",
+        varientType[varients],
+        className,
+      )}
       {...props}
     >
       {children}

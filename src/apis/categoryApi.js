@@ -1,8 +1,7 @@
-// 실제 url 자리
-//const BASE_URL = 'https://api.example.com';
+/* eslint-disable-next-line no-unused-vars */
+const BASE_URL = "https://localhost:8080";
+
 import { categoryData } from "../data/mockData";
-
-
 export const fetchCategoryData = async () => {
   try {
     // const response = await fetch(`${BASE_URL}/products`);
@@ -12,7 +11,7 @@ export const fetchCategoryData = async () => {
     //  throw new Error('네트워크 응답에 문제가 발생했습니다.');
     // }
 
-    return categoryData; 
+    return categoryData;
   } catch (error) {
     console.error("데이터 로딩 실패:", error);
     return [];

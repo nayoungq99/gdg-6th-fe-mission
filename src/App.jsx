@@ -1,18 +1,18 @@
-import {createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Content from "./components/Content";
 import Footer from "./components/Footer";
-import CategoryPage from './pages/CategoryPage';
-import PricePage from './pages/PricePage';
-import SortPage from './pages/SortPage';
-import AdminPage from './pages/AdminPage';
+import CategoryPage from "./pages/CategoryPage";
+import PricePage from "./pages/PricePage";
+import SortPage from "./pages/SortPage";
+import AdminPage from "./pages/AdminPage";
 // import CartPage from './CartPage';
 
 function Layout() {
   return (
     <div className="app">
       <Navbar />
-      <Outlet /> 
+      <Outlet />
       <Footer />
     </div>
   );
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-])
+]);
 
 function App() {
   return <RouterProvider router={router} />;
