@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Item from "../components/Item";
 import { fetchCategoryData } from "../apis/categoryApi";
 import Button from "../components/Button";
+
 function CategoryPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("카테고리 선택");
@@ -118,16 +119,6 @@ const historyLinkWrapperStyle = {
   display: "flex",
   justifyContent: "flex-end",
   marginBottom: "10px",
-};
-
-/* eslint-disable-next-line no-unused-vars */
-const historyLinkStyle = {
-  fontSize: "14px",
-  fontWeight: "bold",
-  cursor: "pointer",
-  borderBottom: "2px solid #000000",
-  paddingBottom: "1px",
-  display: "inline-block",
 };
 
 const itemListStyle = {
